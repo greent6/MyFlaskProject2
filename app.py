@@ -63,7 +63,7 @@ def prepare_data(data):
                     'date':dateparser.parse(cell['MonthReport']),
                 })
     return result
-
+print("starting")
 
 if __name__ == '__main__':
     app.run()

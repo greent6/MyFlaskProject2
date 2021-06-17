@@ -9,9 +9,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    data = get_data()
-    cleaned_data = prepare_data(data)
-    print(str(cleaned_data[0]['date']))
+    try:
+        data = get_data()
+        cleaned_data = prepare_data(data)
+    except Exception as e:
+        return render_template('error.html', err=str(e))
 
     return render_template('index.html',data=cleaned_data)
 

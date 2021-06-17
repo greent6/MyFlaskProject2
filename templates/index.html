@@ -20,11 +20,27 @@
             margin-left: auto;
             margin-right: auto;
         }
+        #chart {
+            background-color: aliceblue;
+            opacity: 0.5;
+        }
+
+        #chart-container {
+            width: 80%;
+            height: 90%;
+            margin: auto;
+            display: table;
+            padding: 10px;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js" integrity="sha512-VCHVc5miKoln972iJPvkQrUYYq7XpxXzvqNfiul1H4aZDwGBGC0lq373KNleaB2LpnC2a/iNfE5zoRYmB4TRDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
     <h2>This is Moscow firefighters statistics by months</h2>
     <div id="main-container">
+        <div id="chart-container">
+            <canvas id="chart"></canvas>
+        </div>
         <table id="cells-table">
             <thead>
                 <tr>
@@ -43,4 +59,41 @@
         </table>
     </div>
 </body>
+<script>
+    const ctx=document.getElementById('chart');
+
+    const config=getDataConfig({{ data | tojson }});
+    const chart=new Chart(ctx, {
+        type:'line',
+        data:config,
+    });
+
+    function getDataConfig(data) {
+        let labels=[];
+        let dataRows=[];
+
+        for (let i=0;i<data.length;i++) {
+            const current=data[i];
+
+            if (current['month_name'] && current['calls_count']) {
+                labels.push(current['month_name']);
+                dataRows.push(current['calls_count']);
+            }
+        }
+     const cfg={
+        labels: labels,
+        datasets: [
+            {
+                data:dataRows,
+                label:'Calls count',
+                borderColor:'#F3580A',
+            }
+        ]
+    };
+    return cfg;
+    }
+
+
+    console.log(getDataConfig({{data | tojson}}));
+</script>
 </html>

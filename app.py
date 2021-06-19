@@ -15,7 +15,7 @@ def index():
     except Exception as e:
         return render_template('error.html', err=str(e))
 
-    return render_template('index.html',data=cleaned_data)
+    return render_template('index.html', data=cleaned_data)
 
 def get_data():
     rows_url=config.API_MAIN_URL+'datasets/1950/rows'
@@ -47,24 +47,24 @@ def get_data():
         for element in j:
             data.append(element)
 
-        skip+=step
+        skip += step
 
     return data
 
 def prepare_data(data):
-    result=[]
+    result = []
 
     for element in data:
         if'Cells' in element and element['Cells'] is not None:
-            cell=element['Cells']
+            cell = element['Cells']
 
             if 'MonthReport' in cell and 'Calls' in cell:
                 result.append({
-                    'month_name':cell['MonthReport'],
-                    'calls_count':cell['Calls'],
-                    'date':dateparser.parse(cell['MonthReport']),
+                    'month_name': cell['MonthReport'],
+                    'calls_count': cell['Calls'],
+                    'date': dateparser.parse(cell['MonthReport']),
                 })
-    return result
+    return(result)
 print("starting")
 
 if __name__ == '__main__':

@@ -10,11 +10,11 @@ app = Flask(__name__)
 def index():
     try:
         theaters_data = get_data()
-        cleaned_data = prepare_data(theaters_data)
+        cleaned_theaters_data = prepare_data(theaters_data)
     except Exception as e:
         return render_template('error.html', err=str(e))
 
-    return render_template('index.html', data=cleaned_data)
+    return render_template('index.html', data=cleaned_theaters_data)
 
 def get_data():
     theaters_url = config_project.API_MAIN_URL + '/stat_theaters_svod/$'
@@ -60,12 +60,14 @@ def prepare_data(theaters_data):
         if'data' in element and element['data'] is not None:
             cell = element['data']
 
-            if 'f_290_9nk_name' in cell and 'f_290_9nk_1' in cell:
+            if 'f_290_9nk_name' in cell and 'f_290_9nk_1' in cell and cell['f_290_9nk_name'] != 'Всего по Российской Федерации':
                 theaters.append({
                     'region_name': cell['f_290_9nk_name'],
                     'theaters_count': cell['f_290_9nk_1'],
                 })
-    print(theaters)
+
+    print('Number of regions: ', len(theaters))
+
     return theaters
 
 

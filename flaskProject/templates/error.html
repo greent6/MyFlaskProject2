@@ -3,8 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Ошибка</title>
+    <style>
+#main-container{
+            background-image: url("https://vestikavkaza.ru/upload/2017-11-05/150989570459ff2e1815da82.13720115.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backdrop-filter: blur(5px);
+        }
+#error-text {
+    background-color: #444444;
+    opacity: 0.8;
+    color: white;
+    font-family: ‘Lato’, sans-serif;
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 88px;
+    margin-left: 58px;
+    margin-right: 58px;
+    margin-top: 30px;
+    padding: 15px;
+    text-align: center;
+}
+#picture {
+    display: table;
+    background-image: url("https://memchik.ru/images/mems/60cf3ef2da5fe.jpg");
+    height: 295px;
+    width: 405px;
+    margin-bottom: 90px;
+    margin-top: 80px;
+    margin-left: 700px;
+    margin-right: 690px;
+    padding: 10px;
+}
+    </style>
 </head>
 <body>
-
+<div id="main-container">
+    <div id="error-text">
+        <h2>О нет! Что-то пошло не так... :(</h2>
+        <p>{{ err }}</p>
+    </div>
+    <div id="picture"></div>
+</div>
 </body>
 </html>

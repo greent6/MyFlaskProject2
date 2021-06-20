@@ -3,8 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <title>Театры по регионам</title>
+    <style>
+ h2{
+            text-align: center;
+        }
+
+        #cells-table{
+            background-color: aliceblue;
+            opacity: 0.8;
+            height: 500px;
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #chart {
+            background-color: aliceblue;
+            opacity: 0.8;
+        }
+
+        #chart-container {
+            width: 80%;
+            height: 90%;
+            margin: auto;
+            display: table;
+            padding: 10%;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js" integrity="sha512-VCHVc5miKoln972iJPvkQrUYYq7XpxXzvqNfiul1H4aZDwGBGC0lq373KNleaB2LpnC2a/iNfE5zoRYmB4TRDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-
+    <h2>Тут должен быть заг</h2>
+    <div id="main-container">
+        <div id="chart-container">
+            <canvas id="chart"></canvas>
+        </div>
+        <table id="cells-table">
+            <thead>
+                <tr>
+                    <th>Округ</th>
+                    <th>Количество театров</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for elements in data %}
+                     <tr>
+                        <td>{{ elements['district_name'] }}</td>
+                        <td>{{ elements['theaters_count'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
+<script>
+    const ctx = document.getElementById('chart')
+
+    const config = getDataConfig({{ data | tojson }})
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: config,
+        options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Количество театров по округам'
+          }
+        }
+      },
+    });
+
+    function getDataConfig(data) {
+        let labels = [];
+        let dataRows = [];
+
+        for (let i = 0; i < data.length; i++) {
+            const current = data[i];
+
+            if (current['district_name'] && current['theaters_count']){
+                labels.push(current['district_name']);
+                dataRows.push(current['theaters_count']);
+            }
+
+        }
+
+        const cfg = {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Theaters',
+              data: dataRows,
+              backgroundColor: 'rgba(250, 198, 14, 0.8)',
+              borderColor: 'rgb(250, 155, 14)',
+              borderWidth: 3,
+            }
+          ]
+        };
+
+        return cfg;
+    }
+
+    console.log(getDataConfig({{ data | tojson }}));
+</script>
 </html>

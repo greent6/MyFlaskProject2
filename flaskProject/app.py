@@ -21,7 +21,7 @@ def get_data():
 
     params = {
         's': 0,
-        'l': 10
+        'l': 20
     }
 
     headers = {
@@ -47,7 +47,7 @@ def get_data():
         if 'data' in j and j['data'] is not None:
             for element in j['data']:
                 result.append(element)
-        params['s'] += 10
+        params['s'] += 20
 
     print('Rows returned: ', len(result))
 
@@ -56,17 +56,29 @@ def get_data():
 def prepare_data(theaters_data):
     theaters = []
 
+    district = [
+        'Дальневосточный федеральный округ',
+        'Приволжский федеральный округ',
+        'Северо-Западный федеральный округ',
+        'Северо-Кавказский федеральный округ',
+        'Сибирский федеральный округ',
+        'Уральский федеральный округ',
+        'Центральный федеральный округ',
+        'Южный федеральный округ'
+    ]
+
     for element in theaters_data:
         if'data' in element and element['data'] is not None:
             cell = element['data']
 
-            if 'f_290_9nk_name' in cell and 'f_290_9nk_1' in cell and cell['f_290_9nk_name'] != 'Всего по Российской Федерации':
+            if 'f_290_9nk_name' in cell and 'f_290_9nk_1' in cell and cell['f_290_9nk_name'] in district:
                 theaters.append({
                     'region_name': cell['f_290_9nk_name'],
                     'theaters_count': cell['f_290_9nk_1'],
                 })
 
     print('Number of regions: ', len(theaters))
+    print(theaters)
 
     return theaters
 
